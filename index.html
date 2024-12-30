@@ -68,6 +68,9 @@
           document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
           const output = document.getElementById('output');
           output.textContent = text; // Mostrar el texto recibido
+          
+          // Actualizar la barra de direcciones
+          history.replaceState(null, null, text);
         })
         .catch(err => {
           console.log(err);
