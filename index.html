@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Cambiar URL</title>
+  <title>Copiar Texto al Portapapeles</title>
   <style>
     body {
       background-color: lightblue;
@@ -71,9 +71,15 @@
           document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
 
           if (text) {
-            // Cambiar el texto en la barra de direcciones
-            history.replaceState(null, null, text);
-            document.getElementById("output").textContent = `La barra de direcciones se cambió a: ${text}`;
+            // Copiar el texto al portapapeles
+            navigator.clipboard.writeText(text).then(() => {
+              document.getElementById("output").textContent = 
+                `El texto "${text}" se ha copiado al portapapeles. Pégalo en la barra de búsqueda o en el navegador.`;
+            }).catch((err) => {
+              console.error("Error al copiar el texto:", err);
+              document.getElementById("output").textContent = 
+                "No se pudo copiar el texto al portapapeles. Intenta manualmente.";
+            });
           } else {
             document.getElementById("output").textContent = "No se recibió un texto válido.";
           }
