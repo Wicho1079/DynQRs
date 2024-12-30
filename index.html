@@ -1,101 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>Copiar Texto al Portapapeles</title>
-  <style>
-    body {
-      background-color: lightblue;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-
-    .lds-ring {
-      display: inline-block;
-      position: relative;
-      width: 80px;
-      height: 80px;
-    }
-    .lds-ring div {
-      box-sizing: border-box;
-      display: block;
-      position: absolute;
-      width: 64px;
-      height: 64px;
-      margin: 8px;
-      border: 8px solid #fff;
-      border-radius: 50%;
-      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      border-color: #fff transparent transparent transparent;
-    }
-    .lds-ring div:nth-child(1) {
-      animation-delay: -0.45s;
-    }
-    .lds-ring div:nth-child(2) {
-      animation-delay: -0.3s;
-    }
-    .lds-ring div:nth-child(3) {
-      animation-delay: -0.15s;
-    }
-    @keyframes lds-ring {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    #output {
-      margin-top: 20px;
-      font-size: 20px;
-      color: #333;
-    }
-  </style>
-</head>
-<body>
+  <meta charset="UTF-8">
+  <title>Redirección Simple</title>
   <script>
     const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbw0FNynGxqIoCNUeaPsRcH8FONl2PrEdrj7JxrnO7dR95ndL7-rMlqMF7OCmEyyX91i/exec";
 
-    // Obtener el parámetro `k` de la URL
     var url = document.location.href;
-    var kIndex = url.indexOf("k=");
-    var k = kIndex !== -1 ? url.substr(kIndex + 2) : null;
+    var k = url.split("k=")[1];
 
     if (k) {
-      // Realizar la solicitud al servidor
       fetch(`${AS_URL_BASE}?k=${k}`)
         .then((response) => response.text())
         .then((text) => {
-          document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
-
-          if (text) {
-            // Copiar el texto al portapapeles
-            navigator.clipboard.writeText(text).then(() => {
-              document.getElementById("output").textContent = 
-                `El texto "${text}" se ha copiado al portapapeles. Pégalo en la barra de búsqueda o en el navegador.`;
-            }).catch((err) => {
-              console.error("Error al copiar el texto:", err);
-              document.getElementById("output").textContent = 
-                "No se pudo copiar el texto al portapapeles. Intenta manualmente.";
-            });
-          } else {
-            document.getElementById("output").textContent = "No se recibió un texto válido.";
-          }
+          document.body.textContent = text; // Muestra solo el texto
         })
         .catch((err) => {
-          console.log(err);
-          document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
-          document.getElementById("output").textContent = "Error al obtener el texto.";
+          console.error("Error:", err);
+          document.body.textContent = "Error al obtener el texto.";
         });
     } else {
-      document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
-      document.getElementById("output").textContent = "Parámetro 'k' no encontrado en la URL.";
+      document.body.textContent = "Parámetro 'k' no encontrado.";
     }
   </script>
-
-  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-  <div id="output">Cargando...</div>
+</head>
+<body>
+  <p>Cargando...</p>
 </body>
 </html>
