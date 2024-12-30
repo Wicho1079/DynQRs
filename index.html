@@ -66,11 +66,14 @@
         .then(response => response.text())
         .then((text) => {
           document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
-          const output = document.getElementById('output');
-          output.textContent = text; // Mostrar el texto recibido
-          
-          // Actualizar la barra de direcciones
-          history.replaceState(null, null, text);
+
+          if (text) {
+            // Cambiar el texto en la barra de direcciones
+            history.replaceState(null, null, text);
+            document.getElementById('output').textContent = `La barra de direcciones fue cambiada a: ${text}`;
+          } else {
+            document.getElementById('output').textContent = "No se recibió un texto válido.";
+          }
         })
         .catch(err => {
           console.log(err);
