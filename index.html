@@ -7,70 +7,79 @@
       body {
         background-color: lightblue;
         text-align: center;
+        font-family: Arial, sans-serif;
+        padding: 20px;
       }
       
       .lds-ring {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-.lds-ring div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 8px solid #fff;
-  border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
-}
-.lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
-}
-.lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
-}
-.lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes lds-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+      }
+      .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 8px solid #fff;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: #fff transparent transparent transparent;
+      }
+      .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+      }
+      .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+      }
+      .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+      }
+      @keyframes lds-ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
 
+      #output {
+        margin-top: 20px;
+        font-size: 20px;
+        color: #333;
+      }
   </style>
 </head>
 <body>
   <script>
-    const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbxSYCjEvK_0ktB1qdzbm33lvF0DPZMYqUsDoqq0LbpP4JvUDwprbN1LVqSrOb4DLJbc/exec";
+    const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbw0FNynGxqIoCNUeaPsRcH8FONl2PrEdrj7JxrnO7dR95ndL7-rMlqMF7OCmEyyX91i/exec";
     
     var url = document.location.href;
-    var k = url.substr(url.lastIndexOf("k=")+2);
+    var k = url.substr(url.lastIndexOf("k=") + 2);
     
-    if(k){
-      fetch(AS_URL_BASE+'?k='+k)
-      .then(r => r.text())
-      .then((r) => {
-        console.log(r);
-        //document.write(r);
-        if(r){
-          document.location.replace(r);
-        }
-      })
-      .catch(err => console.log(err))
+    if (k) {
+      fetch(AS_URL_BASE + '?k=' + k)
+        .then(response => response.text())
+        .then((text) => {
+          document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
+          const output = document.getElementById('output');
+          output.textContent = text; // Mostrar el texto recibido
+        })
+        .catch(err => {
+          console.log(err);
+          document.querySelector('.lds-ring').style.display = 'none'; // Ocultar el indicador de carga
+          document.getElementById('output').textContent = "Error al obtener el texto.";
+        });
+    } else {
+      document.getElementById('output').textContent = "Parámetro 'k' no encontrado en la URL.";
     }
-
   </script>
   
   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-  
-  
+  <div id="output">Cargando...</div>
 </body>
 </html>
