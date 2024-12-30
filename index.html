@@ -7,6 +7,7 @@
     /* Estilo para el body y el contenido */
     body {
       display: flex; /* Usamos Flexbox */
+      flex-direction: column; /* Organiza los elementos en columna */
       justify-content: center; /* Centra el contenido horizontalmente */
       align-items: center; /* Centra el contenido verticalmente */
       height: 100vh; /* 100% de la altura de la pantalla */
@@ -20,6 +21,23 @@
     p {
       font-size: 1.5rem;
       color: white;
+      margin-bottom: 20px; /* Espacio debajo del texto */
+    }
+
+    /* Estilo del botón */
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
     }
   </style>
   <script>
@@ -32,18 +50,33 @@
       fetch(`${AS_URL_BASE}?k=${k}`)
         .then((response) => response.text())
         .then((text) => {
-          document.body.textContent = text; // Muestra solo el texto
+          document.getElementById("text-content").textContent = text; // Muestra el texto
+          document.getElementById("copy-btn").style.display = "block"; // Muestra el botón de copiar
         })
         .catch((err) => {
           console.error("Error:", err);
-          document.body.textContent = "Error al obtener el texto.";
+          document.getElementById("text-content").textContent = "Error al obtener el texto.";
         });
     } else {
-      document.body.textContent = "Parámetro 'k' no encontrado.";
+      document.getElementById("text-content").textContent = "Parámetro 'k' no encontrado.";
+    }
+
+    // Función para copiar el texto al portapapeles
+    function copyText() {
+      const textToCopy = document.getElementById("text-content").textContent;
+      const textArea = document.createElement("textarea");
+      textArea.value = textToCopy;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      alert("Texto copiado al portapapeles!");
     }
   </script>
 </head>
 <body>
   <p>Cargando...</p>
+  <div id="text-content"></div> <!-- Aquí aparecerá el texto dinámico -->
+  <button id="copy-btn" style="display: none;" onclick="copyText()">Copiar texto</button> <!-- Botón para copiar -->
 </body>
 </html>
